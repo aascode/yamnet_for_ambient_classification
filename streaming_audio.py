@@ -18,11 +18,19 @@ import pyaudio
 import numpy as np
 import pandas as pd
 
+import sys
+import os
+
+
 import tensorflow as tf
 
 import params
 import yamnet as yamnet_model
 
+
+#   Check if OS X, then can have nicely formatted output (cleared screen):
+if sys.platform == 'darwin':
+    is_mac = True
 
 #   Suppress warnings.
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
@@ -55,6 +63,9 @@ with graph.as_default():
             waveform = data / 32768.0
 
             scores, _ = yamnet.predict(np.reshape(waveform, [1, -1]), steps=1)
+
+            if is_mac:
+                os.system("clear")
 
             #   Sum sub-frames of predictions, and translate to context-specific ratings.
             prediction = np.sum(scores, axis=0)
