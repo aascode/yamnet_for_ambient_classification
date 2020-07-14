@@ -27,7 +27,7 @@ import yamnet as yamnet_model
 #   Suppress warnings.
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
-#   Load meeting-contextual class waitings.
+#   Load meeting-contextual class weightings.
 df = pd.read_csv('yamnet_remappings.csv')
 context_matrix = df.iloc[:, 3:9].to_numpy().T
 context_classes = df.columns[3:9]
