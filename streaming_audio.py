@@ -29,8 +29,7 @@ import yamnet as yamnet_model
 
 
 #   Check if OS X, then can have nicely formatted output (cleared screen):
-if sys.platform == 'darwin':
-    is_mac = True
+is_mac = (sys.platform == 'darwin')
 
 #   Suppress warnings.
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
