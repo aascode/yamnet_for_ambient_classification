@@ -12,6 +12,10 @@
 
     yamnet: https://github.com/tensorflow/models/tree/master/research/audioset/yamnet
 
+TODO:   readjust to calculate per frame, i.e.,:
+            num_samples = int(round(params.SAMPLE_RATE * 0.975))
+            waveform = layers.Input(batch_shape=(1, num_samples))
+        then implement forgetting filter, e.g.
 """
 
 import pyaudio
@@ -41,7 +45,7 @@ context_classes = df.columns[3:9]
 
 #   Open audio stream.
 p = pyaudio.PyAudio()
-stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000,
+stream = p.open(format=pyaudio.paInt16, channels=1, rate=params.SAMPLE_RATE,
                 input=True, frames_per_buffer=1024)
 
 #   Set up YAMNet.
@@ -56,7 +60,7 @@ with graph.as_default():
     try:
         while True:
             #   Sample 1 sec from laptop microphone at 16 kHz.
-            data = np.frombuffer(stream.read(16000, exception_on_overflow=False), dtype=np.int16)
+            data = np.frombuffer(stream.read(params.SAMPLE_RATE, exception_on_overflow=False), dtype=np.int16)
 
             #   Normalize.
             waveform = data / 32768.0
